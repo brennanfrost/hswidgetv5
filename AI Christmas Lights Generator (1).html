@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Christmas Lights Preview — High-Strung</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@700;900&family=Open+Sans:wght@300;400&display=swap');
+*{box-sizing:border-box;margin:0;padding:0}
+:root{--bg:#0d0d0d;--surface:#161616;--border:#2a2a2a;--red:#c8102e;--red2:#8b0b1f;--text:#e8e8e8;--muted:#777}
+body{background:var(--bg);color:var(--text);font-family:'Open Sans',sans-serif;min-height:100vh;display:flex;flex-direction:column;align-items:center}
+header{width:100%;background:#000;padding:14px 24px;display:flex;align-items:center;justify-content:space-between;border-bottom:2px solid var(--red)}
+.logo img{height:38px}.logo-fb{display:none;font-family:'Montserrat',sans-serif;font-weight:900;font-size:.95rem;color:#fff;letter-spacing:.04em;text-transform:uppercase}
+.logo img.err{display:none}.logo img.err~.logo-fb{display:block}
+.hbtn{font-family:'Montserrat',sans-serif;font-size:.7rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#fff;background:var(--red);padding:8px 16px;border-radius:3px;text-decoration:none}
+#up{display:flex;flex-direction:column;align-items:center;justify-content:center;flex:1;gap:20px;padding:40px 20px;text-align:center;width:100%;max-width:600px}
+#up h1{font-family:'Montserrat',sans-serif;font-weight:900;font-size:clamp(1.6rem,5vw,2.4rem);text-transform:uppercase;color:#fff}
+#up p{color:var(--muted);font-size:.88rem;line-height:1.6}
+.ubtn{background:var(--red);color:#fff;padding:16px 36px;border-radius:4px;font-family:'Montserrat',sans-serif;font-size:.9rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;cursor:pointer;display:inline-block;margin-top:8px}
+input[type=file]{display:none}
+#ds{display:none;width:100%;max-width:920px;padding:16px 16px 60px;flex-direction:column;gap:14px}
+.tb{background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:10px 14px;display:flex;align-items:center;gap:8px;flex-wrap:wrap;position:relative}
+.tl{font-family:'Montserrat',sans-serif;font-size:.62rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);white-space:nowrap}
+.ts{width:1px;height:22px;background:var(--border);margin:0 2px}
+.mbtn{font-family:'Montserrat',sans-serif;font-size:.65rem;font-weight:700;letter-spacing:.07em;text-transform:uppercase;padding:6px 10px;border-radius:3px;border:1px solid var(--border);background:transparent;color:var(--muted);cursor:pointer;white-space:nowrap}
+.mbtn.la{background:var(--red);border-color:var(--red);color:#fff}
+.mbtn.ga{background:#1a5c1a;border-color:#2a8c2a;color:#aaffaa}
+.mbtn.wa{background:#1a4a1a;border-color:#2a7a2a;color:#88ee88}
+.pslots{display:flex;align-items:center;gap:5px;flex-wrap:wrap}
+.ps{width:20px;height:20px;border-radius:50%;border:2px solid #fff;cursor:pointer;flex-shrink:0}
+.padd{width:20px;height:20px;border-radius:50%;border:2px dashed #444;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:14px;color:#666;flex-shrink:0}
+.padd:hover{color:#fff;border-color:#fff}
+.cpop{position:absolute;z-index:200;background:#1e1e1e;border:1px solid #333;border-radius:8px;padding:10px;display:none;flex-wrap:wrap;gap:6px;width:148px;box-shadow:0 8px 28px rgba(0,0,0,.7);top:100%;left:14px;margin-top:4px}
+.cpop.on{display:flex}
+.csw{width:26px;height:26px;border-radius:50%;cursor:pointer;border:2px solid transparent}
+.csw:hover{border-color:#fff}
+input[type=range]{-webkit-appearance:none;height:3px;background:#333;border-radius:2px;outline:none;cursor:pointer}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:13px;height:13px;border-radius:50%;background:var(--red);cursor:pointer}
+.rv{font-size:.68rem;color:var(--muted);min-width:26px}
+.btn{padding:8px 14px;border-radius:3px;font-family:'Montserrat',sans-serif;font-size:.66rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;border:none;white-space:nowrap}
+.bd{background:#1a1a1a;color:#ff5555;border:1px solid #3a1a1a}
+.bs{background:var(--surface);color:var(--text);border:1px solid var(--border)}
+.bg{background:#1a5c1a;color:#7fff7f;border:1px solid #2a8c2a;font-size:.78rem;padding:12px 22px}
+.wbtn{font-family:'Montserrat',sans-serif;font-size:.65rem;font-weight:700;padding:5px 9px;border-radius:3px;border:1px solid var(--border);background:transparent;color:var(--muted);cursor:pointer}
+.wbtn.on{background:#1a5c1a;border-color:#2a8c2a;color:#aaffaa}
+.cw{width:100%;position:relative;border-radius:6px;overflow:hidden;border:1px solid var(--border);background:#000}
+#mi{width:100%;display:block;pointer-events:none;user-select:none}
+#mc{position:absolute;top:0;left:0;width:100%;height:100%}
+.hint{background:rgba(200,16,46,.08);border:1px solid rgba(200,16,46,.2);border-radius:5px;padding:10px 14px;font-size:.76rem;color:#ccc;line-height:1.5}
+.hint strong{color:#fff}
+.hint.gh{background:rgba(20,120,20,.1);border-color:rgba(20,180,20,.2)}
+.hint.wh{background:rgba(20,100,20,.1);border-color:rgba(20,150,20,.2)}
+.acts{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.cta{background:var(--surface);border:1px solid var(--border);border-left:4px solid var(--red);border-radius:6px;padding:20px 22px;display:flex;align-items:flex-start;gap:16px;flex-wrap:wrap}
+.cta strong{display:block;font-family:'Montserrat',sans-serif;font-weight:700;font-size:.88rem;letter-spacing:.04em;text-transform:uppercase;color:#fff;margin-bottom:4px}
+.cta p{font-size:.78rem;color:var(--muted);line-height:1.5;max-width:440px}
+.cta .note{font-size:.72rem;color:#3dba5e;margin-top:5px}
+.cta-a{background:var(--red);color:#fff;padding:11px 20px;border-radius:3px;font-family:'Montserrat',sans-serif;font-size:.7rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;text-decoration:none;white-space:nowrap;align-self:center;flex-shrink:0}
+.snow{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:0;overflow:hidden}
+.flake{position:absolute;top:-10px;color:#ffffff0d;animation:fall linear infinite}
+@keyframes fall{to{transform:translateY(100vh) rotate(360deg)}}
+</style>
+</head>
+<body>
+<div class="snow" id="snow"></div>
+<header>
+  <div class="logo">
+    <img src="https://images.squarespace-cdn.com/content/v1/5f763658cce74c4bce01c68e/1603252509504-ZFK8QBW30IVESHS56UKY/Highstrung-logo+white.png?format=750w" alt="High-Strung" id="limg">
+    <span class="logo-fb">High-Strung Christmas Lights</span>
+  </div>
+  <a href="https://clienthub.getjobber.com/hubs/e1d72488-4113-44d4-933c-1b45bed9a714/public/requests/257811/new" target="_blank" class="hbtn">Free Quote</a>
+</header>
+
+<div id="up">
+  <h1>See Your Home Lit Up</h1>
+  <p>Upload a photo, draw your rooflines, add garland and wreaths, then download your design.</p>
+  <label class="ubtn" for="fi">📷 Choose Photo</label>
+  <input type="file" id="fi" accept="image/*">
+  <p style="font-size:.75rem">JPG, PNG, HEIC — front-facing photos work best</p>
+</div>
+
+<div id="ds">
+  <div class="tb">
+    <span class="tl">Mode:</span>
+    <button class="mbtn la" id="ml">💡 Lights</button>
+    <button class="mbtn" id="mg">🌿 Garland</button>
+    <button class="mbtn" id="mw">🎄 Wreath</button>
+    <div class="ts"></div>
+    <div id="lo" style="display:flex;align-items:center;gap:7px;flex-wrap:wrap">
+      <span class="tl">Pattern:</span>
+      <div class="pslots" id="pslots"></div>
+      <div class="padd" id="padd">+</div>
+      <div class="ts"></div>
+      <span class="tl">Spacing:</span>
+      <input type="range" id="sr" min="5" max="32" value="13" style="width:60px">
+      <span class="rv" id="sv">13</span>
+    </div>
+    <div id="go" style="display:none;align-items:center;gap:7px">
+      <span class="tl">Density:</span>
+      <input type="range" id="gd" min="1" max="5" value="3" style="width:60px">
+      <span class="rv" id="gv">Med</span>
+    </div>
+    <div id="wo" style="display:none;align-items:center;gap:6px;flex-wrap:wrap">
+      <span class="tl">Size:</span>
+      <button class="wbtn on" data-s="40">12"</button>
+      <button class="wbtn" data-s="70">24"</button>
+      <button class="wbtn" data-s="110">36"</button>
+      <button class="wbtn" data-s="145">48"</button>
+      <button class="wbtn" data-s="180">60"</button>
+    </div>
+    <div class="ts"></div>
+    <button class="btn bd" id="ub">↩ Undo</button>
+    <button class="btn bd" id="cb">Clear</button>
+    <div class="ts"></div>
+    <label class="btn bs" style="cursor:pointer">📷 Change Photo<input type="file" accept="image/*" id="cf" style="display:none"></label>
+    <div class="cpop" id="cpop"></div>
+  </div>
+
+  <div class="hint" id="hint"><strong>Lights:</strong> Click to place points along a roofline. <strong>Double-click</strong> to finish that segment.</div>
+
+  <div class="cw" id="cw">
+    <img id="mi" alt="Your home">
+    <canvas id="mc"></canvas>
+  </div>
+
+  <div class="acts">
+    <button class="btn bg" id="dlb">↓ Download &amp; Get Quote</button>
+  </div>
+
+  <div class="cta">
+    <div>
+      <strong>Ready for a Free Quote?</strong>
+      <p>Download your design above, then attach it to your quote request so we know exactly what you have in mind.</p>
+      <p class="note">✓ After downloading, open the quote form and upload your preview in the "Upload Images" section.</p>
+    </div>
+    <a href="https://clienthub.getjobber.com/hubs/e1d72488-4113-44d4-933c-1b45bed9a714/public/requests/257811/new" target="_blank" class="cta-a">Open Quote Form →</a>
+  </div>
+</div>
+
+<script>
+// Snow
+(function(){var sn=document.getElementById('snow');for(var i=0;i<14;i++){var f=document.createElement('div');f.className='flake';f.textContent='❄';f.style.cssText='left:'+Math.random()*100+'%;font-size:'+(0.4+Math.random()*0.7)+'em;animation-duration:'+(10+Math.random()*10)+'s;animation-delay:'+(Math.random()*12)+'s';sn.appendChild(f);}})();
+document.getElementById('limg').onerror=function(){this.classList.add('err')};
+
+var PAL={'Warm White':'#ffe899','Cool White':'#e8f4ff','Red':'#ff2222','Green':'#22cc22','Blue':'#2255ff','Gold':'#ffd700','Orange':'#ff8800','Pink':'#ff44cc','Purple':'#9933ff','Teal':'#00ccbb'};
+
+// ── State ──────────────────────────────────────────────────────────────────
+var mode='lights', pat=['#ffe899'], spacing=13, gdens=3, wsize=40;
+var els=[], curPts=[], raf=null, animT=0;
+var imgW=1, imgH=1;
+
+// ── Upload ──────────────────────────────────────────────────────────────────
+function loadFile(file){
+  if(!file) return;
+  var reader=new FileReader();
+  reader.onload=function(e){
+    var img=document.getElementById('mi');
+    img.onload=function(){
+      imgW=img.naturalWidth; imgH=img.naturalHeight;
+      var c=document.getElementById('mc');
+      // Set canvas to DISPLAY size, not natural — avoids all coordinate scaling issues
+      var rect=document.getElementById('cw').getBoundingClientRect();
+      c.width=Math.round(rect.width)||800;
+      c.height=Math.round(rect.width * imgH/imgW)||600;
+      els=[]; curPts=[];
+      document.getElementById('up').style.display='none';
+      document.getElementById('ds').style.display='flex';
+      redraw();
+    };
+    img.src=e.target.result;
+  };
+  reader.readAsDataURL(file);
+}
+document.getElementById('fi').onchange=function(){loadFile(this.files[0])};
+document.getElementById('cf').onchange=function(){loadFile(this.files[0])};
+
+// Resize canvas if window resizes
+window.addEventListener('resize', function(){
+  var img=document.getElementById('mi');
+  if(!img.src) return;
+  var c=document.getElementById('mc');
+  var rect=document.getElementById('cw').getBoundingClientRect();
+  var newW=Math.round(rect.width)||800;
+  var newH=Math.round(rect.width * imgH/imgW)||600;
+  if(newW===c.width) return;
+  // Rescale all points
+  var sx=newW/c.width, sy=newH/c.height;
+  els.forEach(function(el){
+    if(el.p) el.p=el.p.map(function(pt){return[pt[0]*sx,pt[1]*sy]});
+    if(el.x) {el.x*=sx; el.y*=sy; el.s*=sx;}
+  });
+  c.width=newW; c.height=newH;
+  redraw();
+});
+
+// ── Mode ────────────────────────────────────────────────────────────────────
+function setMode(m){
+  commitLine();
+  mode=m;
+  document.getElementById('ml').className='mbtn'+(m==='lights'?' la':'');
+  document.getElementById('mg').className='mbtn'+(m==='garland'?' ga':'');
+  document.getElementById('mw').className='mbtn'+(m==='wreath'?' wa':'');
+  document.getElementById('lo').style.display=m==='lights'?'flex':'none';
+  document.getElementById('go').style.display=m==='garland'?'flex':'none';
+  document.getElementById('wo').style.display=m==='wreath'?'flex':'none';
+  var hints={
+    lights:'<strong>Lights:</strong> Click to place points. <strong>Double-click</strong> to finish the line.',
+    garland:'<strong>Garland:</strong> Click to place points. <strong>Double-click</strong> to finish. Drapes naturally.',
+    wreath:'<strong>Wreath:</strong> Click anywhere on the photo to place a wreath.'
+  };
+  var h=document.getElementById('hint');
+  h.innerHTML=hints[m];
+  h.className='hint'+(m==='garland'?' gh':m==='wreath'?' wh':'');
+}
+document.getElementById('ml').onclick=function(){setMode('lights')};
+document.getElementById('mg').onclick=function(){setMode('garland')};
+document.getElementById('mw').onclick=function(){setMode('wreath')};
+
+// ── Pattern ─────────────────────────────────────────────────────────────────
+function renderPat(){
+  var s=document.getElementById('pslots'); s.innerHTML='';
+  pat.forEach(function(c,i){
+    var d=document.createElement('div'); d.className='ps';
+    d.style.background=d.style.borderColor=c;
+    d.onclick=function(e){e.stopPropagation();openPicker(i)};
+    d.oncontextmenu=function(e){e.preventDefault();if(pat.length>1){pat.splice(i,1);renderPat();redraw()}};
+    s.appendChild(d);
+  });
+  redraw();
+}
+var pickerIdx=null;
+function openPicker(i){pickerIdx=i; document.getElementById('cpop').classList.add('on')}
+document.getElementById('padd').onclick=function(e){
+  e.stopPropagation();
+  if(pat.length<8){pat.push('#ff2222');renderPat();openPicker(pat.length-1)}
+};
+var pop=document.getElementById('cpop');
+Object.entries(PAL).forEach(function(kv){
+  var sw=document.createElement('div'); sw.className='csw'; sw.style.background=kv[1]; sw.title=kv[0];
+  sw.onclick=function(e){e.stopPropagation();if(pickerIdx!==null){pat[pickerIdx]=kv[1];renderPat()}pop.classList.remove('on');pickerIdx=null};
+  pop.appendChild(sw);
+});
+document.addEventListener('click',function(){pop.classList.remove('on');pickerIdx=null});
+document.getElementById('sr').oninput=function(){spacing=+this.value;document.getElementById('sv').textContent=this.value;redraw()};
+document.getElementById('gd').oninput=function(){gdens=+this.value;document.getElementById('gv').textContent=['','Sparse','Light','Med','Full','Dense'][gdens];redraw()};
+document.querySelectorAll('.wbtn').forEach(function(b){
+  b.onclick=function(){
+    document.querySelectorAll('.wbtn').forEach(function(x){x.classList.remove('on')});
+    this.classList.add('on'); wsize=+this.dataset.s;
+  }
+});
+renderPat();
+
+// ── Canvas drawing ──────────────────────────────────────────────────────────
+var cv=document.getElementById('mc');
+var ctx=cv.getContext('2d');
+
+// Get click position relative to canvas in canvas pixels
+function getPos(e){
+  var r=cv.getBoundingClientRect();
+  var clientX=e.clientX||e.changedTouches[0].clientX;
+  var clientY=e.clientY||e.changedTouches[0].clientY;
+  return [clientX-r.left, clientY-r.top];
+}
+
+var lastClickTime=0;
+
+// Use pointerdown for both mouse and touch — no double-fire
+cv.addEventListener('pointerdown', function(e){
+  e.preventDefault();
+  var pos=getPos(e);
+  var now=Date.now();
+
+  if(mode==='wreath'){
+    els.push({t:'w', x:pos[0], y:pos[1], s:wsize});
+    redraw(); return;
+  }
+
+  // Double-click/tap = finish line
+  if(now-lastClickTime < 400){
+    lastClickTime=0;
+    commitLine();
+    return;
+  }
+  lastClickTime=now;
+  curPts.push(pos);
+  redraw();
+});
+
+function commitLine(){
+  if(curPts.length>=2){
+    els.push({t:mode, p:curPts.slice(), pat:pat.slice(), sp:spacing, gd:gdens});
+  }
+  curPts=[];
+  redraw();
+}
+
+document.getElementById('ub').onclick=function(){
+  if(curPts.length>0) curPts.pop();
+  else els.pop();
+  redraw();
+};
+document.getElementById('cb').onclick=function(){els=[];curPts=[];redraw()};
+
+// ── Download ────────────────────────────────────────────────────────────────
+document.getElementById('dlb').onclick=function(){
+  commitLine();
+  // Draw final frame then export
+  cancelAnimationFrame(raf);
+  drawFrame(animT);
+  var img=document.getElementById('mi');
+  var tmp=document.createElement('canvas');
+  tmp.width=imgW; tmp.height=imgH;
+  var tc=tmp.getContext('2d');
+  tc.drawImage(img,0,0,imgW,imgH);
+  // Scale canvas drawing up to natural image size
+  tc.drawImage(cv,0,0,imgW,imgH);
+  var url=tmp.toDataURL('image/jpeg',0.93);
+  var a=document.createElement('a');
+  a.href=url; a.download='hscl-preview.jpg';
+  document.body.appendChild(a); a.click(); document.body.removeChild(a);
+  // Restart animation
+  startAnim();
+};
+
+// ── Render loop ──────────────────────────────────────────────────────────────
+function redraw(){cancelAnimationFrame(raf); animT=0; startAnim()}
+function startAnim(){raf=requestAnimationFrame(function loop(){ drawFrame(animT); animT+=0.025; raf=requestAnimationFrame(loop); })}
+
+function drawFrame(t){
+  var W=cv.width, H=cv.height;
+  ctx.clearRect(0,0,W,H);
+
+  var br=Math.max(2,W/200), ww=Math.max(0.5,W/650);
+
+  // Draw committed elements
+  els.forEach(function(el){
+    if(el.t==='lights') drawLights(el,br,ww,t);
+    else if(el.t==='garland') drawGarland(el,ww);
+    else if(el.t==='w') drawWreath(el.x,el.y,el.s,t);
+  });
+
+  // Draw current in-progress points + line
+  if(curPts.length>0){
+    // Dashed preview line
+    if(curPts.length>1){
+      ctx.strokeStyle='rgba(255,255,255,0.25)'; ctx.lineWidth=ww;
+      ctx.setLineDash([6,4]); ctx.lineCap='round';
+      ctx.beginPath(); ctx.moveTo(curPts[0][0],curPts[0][1]);
+      for(var i=1;i<curPts.length;i++) ctx.lineTo(curPts[i][0],curPts[i][1]);
+      ctx.stroke(); ctx.setLineDash([]);
+    }
+    // Point markers
+    curPts.forEach(function(p,i){
+      ctx.fillStyle='rgba(255,255,255,0.7)';
+      ctx.beginPath(); ctx.arc(p[0],p[1],br*2,0,Math.PI*2); ctx.fill();
+      ctx.strokeStyle='var(--red)'; ctx.lineWidth=1.5;
+      ctx.beginPath(); ctx.arc(p[0],p[1],br*3,0,Math.PI*2); ctx.stroke();
+    });
+    // If lights/garland mode, preview bulbs on current line
+    if(mode==='lights' && curPts.length>=2){
+      drawLights({p:curPts,pat:pat,sp:spacing},br,ww,t);
+    }
+  }
+
+  // Empty state
+  if(els.length===0 && curPts.length===0){
+    ctx.fillStyle='rgba(0,0,0,0.3)'; ctx.fillRect(0,0,W,H);
+    ctx.fillStyle='rgba(255,255,255,0.45)';
+    ctx.font='bold '+Math.max(12,W/55)+'px Montserrat,sans-serif';
+    ctx.textAlign='center'; ctx.textBaseline='middle';
+    ctx.fillText('Click to start designing',W/2,H/2);
+  }
+}
+
+function drawLights(el,br,ww,t){
+  var p=el.p, sp=el.sp||spacing, pat2=el.pat||pat;
+  if(!p||p.length<2) return;
+  ctx.strokeStyle='rgba(55,55,55,0.55)'; ctx.lineWidth=ww;
+  ctx.lineCap='round'; ctx.lineJoin='round'; ctx.setLineDash([]);
+  ctx.beginPath(); ctx.moveTo(p[0][0],p[0][1]);
+  for(var i=1;i<p.length;i++) ctx.lineTo(p[i][0],p[i][1]);
+  ctx.stroke();
+  var da=0, nd=sp*0.3, bi=0;
+  for(var i=0;i<p.length-1;i++){
+    var x0=p[i][0],y0=p[i][1],x1=p[i+1][0],y1=p[i+1][1];
+    var dx=x1-x0,dy=y1-y0,len=Math.sqrt(dx*dx+dy*dy);
+    while(nd<=da+len){
+      var f=(nd-da)/len;
+      var bx=x0+dx*f, by=y0+dy*f;
+      var col=pat2[bi%pat2.length];
+      var bright=0.55+0.45*Math.sin((t||0)*2.1+bi*0.7);
+      drawBulb(bx,by,br,col,bright);
+      bi++; nd+=sp;
+    }
+    da+=len;
+  }
+}
+
+function drawBulb(x,y,r,col,bright){
+  var h=ctx.createRadialGradient(x,y,0,x,y,r*3.5);
+  h.addColorStop(0,rgba(col,0.45*bright)); h.addColorStop(1,rgba(col,0));
+  ctx.fillStyle=h; ctx.beginPath(); ctx.arc(x,y,r*3.5,0,Math.PI*2); ctx.fill();
+  var bg=ctx.createRadialGradient(x-r*0.3,y-r*0.3,0,x,y,r);
+  bg.addColorStop(0,rgba('#fff',bright));
+  bg.addColorStop(0.3,rgba(col,0.95*bright));
+  bg.addColorStop(1,rgba(col,0.6*bright));
+  ctx.fillStyle=bg; ctx.beginPath(); ctx.arc(x,y,r,0,Math.PI*2); ctx.fill();
+  ctx.fillStyle=rgba('#fff',0.85*bright);
+  ctx.beginPath(); ctx.arc(x-r*0.18,y-r*0.18,r*0.25,0,Math.PI*2); ctx.fill();
+}
+
+function drawGarland(el,ww){
+  var p=el.p, den=el.gd||gdens;
+  if(!p||p.length<2) return;
+  var sag=16*den;
+  for(var i=0;i<p.length-1;i++){
+    var x0=p[i][0],y0=p[i][1],x1=p[i+1][0],y1=p[i+1][1];
+    var mx=(x0+x1)/2, my=(y0+y1)/2+sag;
+    ctx.strokeStyle='#1a4a1a'; ctx.lineWidth=Math.max(3,ww*5);
+    ctx.lineCap='round'; ctx.setLineDash([]);
+    ctx.beginPath(); ctx.moveTo(x0,y0); ctx.quadraticCurveTo(mx,my,x1,y1); ctx.stroke();
+    var steps=Math.max(10,Math.floor(Math.sqrt((x1-x0)**2+(y1-y0)**2)/(8/den)));
+    for(var s=0;s<=steps;s++){
+      var tt=s/steps;
+      var bx=(1-tt)*(1-tt)*x0+2*(1-tt)*tt*mx+tt*tt*x1;
+      var by=(1-tt)*(1-tt)*y0+2*(1-tt)*tt*my+tt*tt*y1;
+      ctx.fillStyle='hsl('+(100+Math.floor(Math.random()*40))+',65%,'+(25+Math.floor(Math.random()*18))+'%)';
+      ctx.beginPath(); ctx.arc(bx,by,Math.max(2,ww*3.5),0,Math.PI*2); ctx.fill();
+    }
+    for(var s=0;s<steps*0.15;s++){
+      var tt2=Math.random();
+      var bx2=(1-tt2)*(1-tt2)*x0+2*(1-tt2)*tt2*mx+tt2*tt2*x1;
+      var by2=(1-tt2)*(1-tt2)*y0+2*(1-tt2)*tt2*my+tt2*tt2*y1;
+      ctx.fillStyle='#cc1111'; ctx.beginPath(); ctx.arc(bx2,by2,Math.max(1.5,ww*2),0,Math.PI*2); ctx.fill();
+    }
+  }
+}
+
+function drawWreath(cx,cy,size,t){
+  var r=size/2;
+  for(var layer=0;layer<3;layer++){
+    var lr=r-layer*(r*0.12), segs=Math.max(14,Math.floor(lr*0.75));
+    for(var i=0;i<segs;i++){
+      var ang=(i/segs)*Math.PI*2, nx=cx+Math.cos(ang)*lr, ny=cy+Math.sin(ang)*lr;
+      ctx.save(); ctx.translate(nx,ny); ctx.rotate(ang+Math.PI/2);
+      var lg=ctx.createRadialGradient(0,0,0,0,0,r*0.3);
+      lg.addColorStop(0,'#3a8c2a'); lg.addColorStop(1,'#1a4a0a');
+      ctx.fillStyle=lg; ctx.beginPath(); ctx.ellipse(0,0,r*0.11,r*0.15,0,0,Math.PI*2); ctx.fill();
+      ctx.restore();
+    }
+  }
+  var inn=ctx.createRadialGradient(cx,cy,r*0.35,cx,cy,r*0.65);
+  inn.addColorStop(0,'rgba(0,0,0,0.7)'); inn.addColorStop(1,'rgba(0,0,0,0)');
+  ctx.fillStyle=inn; ctx.beginPath(); ctx.arc(cx,cy,r*0.65,0,Math.PI*2); ctx.fill();
+  // Berries
+  var bc=Math.max(5,Math.floor(r*0.5));
+  for(var i=0;i<bc;i++){
+    var a2=(i/bc)*Math.PI*2+0.3, br2=r*(0.65+(i%3)*0.1);
+    var bx=cx+Math.cos(a2)*br2, by=cy+Math.sin(a2)*br2;
+    var bg=ctx.createRadialGradient(bx-1,by-1,0,bx,by,Math.max(2,r*0.07));
+    bg.addColorStop(0,'#ff4444'); bg.addColorStop(1,'#990000');
+    ctx.fillStyle=bg; ctx.beginPath(); ctx.arc(bx,by,Math.max(2,r*0.07),0,Math.PI*2); ctx.fill();
+  }
+  // Bow at bottom
+  var bowY=cy+r*0.88, bw=r*0.42, bh=r*0.26;
+  ctx.fillStyle='#cc1111';
+  ctx.beginPath(); ctx.ellipse(cx-bw*0.5,bowY-bh*0.1,bw*0.6,bh*0.55,-0.4,0,Math.PI*2); ctx.fill();
+  ctx.beginPath(); ctx.ellipse(cx+bw*0.5,bowY-bh*0.1,bw*0.6,bh*0.55,0.4,0,Math.PI*2); ctx.fill();
+  ctx.strokeStyle='#aa0000'; ctx.lineWidth=Math.max(1.5,r*0.06); ctx.lineCap='round';
+  ctx.beginPath(); ctx.moveTo(cx,bowY); ctx.lineTo(cx-bw*0.4,bowY+bh*0.9); ctx.stroke();
+  ctx.beginPath(); ctx.moveTo(cx,bowY); ctx.lineTo(cx+bw*0.3,bowY+bh*0.85); ctx.stroke();
+  ctx.fillStyle='#dd0000'; ctx.beginPath(); ctx.arc(cx,bowY,bw*0.18,0,Math.PI*2); ctx.fill();
+  // Twinkling lights
+  var lc=Math.max(8,Math.floor(r*0.7)), lp=['#ffe899','#ff2222','#22cc22','#2255ff','#ffd700'];
+  for(var i=0;i<lc;i++){
+    var a3=(i/lc)*Math.PI*2, lr3=r*(0.62+(i%2)*0.15);
+    drawBulb(cx+Math.cos(a3)*lr3, cy+Math.sin(a3)*lr3, Math.max(1.5,r*0.055), lp[i%lp.length], 0.5+0.5*Math.sin(t*2.2+i*0.9));
+  }
+}
+
+function rgba(hex,a){
+  if(!hex||hex.length<7) return 'rgba(255,255,255,'+a.toFixed(2)+')';
+  return 'rgba('+parseInt(hex.slice(1,3),16)+','+parseInt(hex.slice(3,5),16)+','+parseInt(hex.slice(5,7),16)+','+a.toFixed(2)+')';
+}
+</script>
+</body>
+</html>
