@@ -1,0 +1,669 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Christmas Lights Preview — High-Strung</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@700;900&family=Open+Sans:wght@300;400&display=swap');
+*{box-sizing:border-box;margin:0;padding:0}
+:root{--bg:#0d0d0d;--sur:#161616;--bdr:#2a2a2a;--red:#c8102e;--red2:#8b0b1f;--txt:#e8e8e8;--mut:#777}
+body{background:var(--bg);color:var(--txt);font-family:'Open Sans',sans-serif;min-height:100vh;display:flex;flex-direction:column;align-items:center}
+
+/* Header */
+header{width:100%;background:#000;padding:13px 22px;display:flex;align-items:center;justify-content:space-between;border-bottom:2px solid var(--red);flex-shrink:0}
+.logo img{height:36px;display:block}
+.logo-fb{display:none;font-family:'Montserrat',sans-serif;font-weight:900;font-size:.9rem;color:#fff;letter-spacing:.04em;text-transform:uppercase}
+.logo img.err{display:none}.logo img.err~.logo-fb{display:block}
+.hbtn{font-family:'Montserrat',sans-serif;font-size:.68rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#fff;background:var(--red);padding:8px 15px;border-radius:3px;text-decoration:none}
+
+/* Upload screen */
+#up{display:flex;flex-direction:column;align-items:center;justify-content:center;flex:1;gap:18px;padding:40px 20px;text-align:center;width:100%;max-width:560px}
+#up h1{font-family:'Montserrat',sans-serif;font-weight:900;font-size:clamp(1.5rem,5vw,2.3rem);text-transform:uppercase;color:#fff}
+#up p{color:var(--mut);font-size:.86rem;line-height:1.65}
+.ubtn{background:var(--red);color:#fff;padding:15px 34px;border-radius:4px;font-family:'Montserrat',sans-serif;font-size:.88rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;cursor:pointer;display:inline-block}
+input[type=file]{display:none}
+
+/* Design screen */
+#ds{display:none;width:100%;max-width:920px;padding:14px 14px 60px;flex-direction:column;gap:12px}
+
+/* Toolbar */
+.tb{background:var(--sur);border:1px solid var(--bdr);border-radius:6px;padding:9px 12px;display:flex;align-items:center;gap:7px;flex-wrap:wrap;position:relative}
+.tl{font-family:'Montserrat',sans-serif;font-size:.6rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--mut);white-space:nowrap}
+.tsep{width:1px;height:20px;background:var(--bdr);margin:0 1px}
+.mbtn{font-family:'Montserrat',sans-serif;font-size:.63rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:5px 9px;border-radius:3px;border:1px solid var(--bdr);background:transparent;color:var(--mut);cursor:pointer;white-space:nowrap}
+.mbtn.la{background:var(--red);border-color:var(--red);color:#fff}
+.mbtn.ga{background:#1a5c1a;border-color:#2a8c2a;color:#aaffaa}
+.mbtn.wa{background:#1a4a1a;border-color:#2a7a2a;color:#88ee88}
+.pslots{display:flex;align-items:center;gap:4px;flex-wrap:wrap}
+.ps{width:18px;height:18px;border-radius:50%;border:2px solid #fff;cursor:pointer;flex-shrink:0}
+.padd{width:18px;height:18px;border-radius:50%;border:2px dashed #444;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:13px;color:#555;flex-shrink:0}
+.padd:hover{color:#fff;border-color:#fff}
+.cpop{position:absolute;z-index:300;background:#1e1e1e;border:1px solid #333;border-radius:8px;padding:9px;display:none;flex-wrap:wrap;gap:5px;width:142px;box-shadow:0 8px 28px rgba(0,0,0,.8);top:100%;left:12px;margin-top:4px}
+.cpop.on{display:flex}
+.csw{width:24px;height:24px;border-radius:50%;cursor:pointer;border:2px solid transparent;flex-shrink:0}
+.csw:hover{border-color:#fff}
+input[type=range]{-webkit-appearance:none;height:3px;background:#333;border-radius:2px;outline:none;cursor:pointer;width:60px}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:12px;height:12px;border-radius:50%;background:var(--red);cursor:pointer}
+.rv{font-size:.65rem;color:var(--mut);min-width:22px}
+.btn{padding:7px 12px;border-radius:3px;font-family:'Montserrat',sans-serif;font-size:.63rem;font-weight:700;letter-spacing:.07em;text-transform:uppercase;cursor:pointer;border:none;white-space:nowrap}
+.bd{background:#1a1a1a;color:#ff5555;border:1px solid #3a1a1a}
+.bs{background:var(--sur);color:var(--txt);border:1px solid var(--bdr)}
+.bg{background:#1a5c1a;color:#7fff7f;border:1px solid #2a8c2a;font-size:.76rem;padding:11px 20px}
+.wbtn{font-family:'Montserrat',sans-serif;font-size:.63rem;font-weight:700;padding:5px 8px;border-radius:3px;border:1px solid var(--bdr);background:transparent;color:var(--mut);cursor:pointer}
+.wbtn.on{background:#1a5c1a;border-color:#2a8c2a;color:#aaffaa}
+
+/* Canvas area */
+.cw{width:100%;position:relative;border-radius:6px;overflow:hidden;border:1px solid var(--bdr);background:#000;user-select:none} #zw{position:absolute;top:0;left:0;width:100%;transform-origin:0 0}
+#mi{width:100%;display:block;pointer-events:none;user-select:none}
+
+.zbts{position:absolute;bottom:10px;right:10px;display:flex;flex-direction:column;gap:4px;z-index:10}
+.zbt{width:30px;height:30px;background:rgba(0,0,0,.75);border:1px solid #555;border-radius:4px;color:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer;font-family:monospace;font-size:15px;line-height:1}
+.zbt:hover{background:rgba(200,16,46,.75)}
+.zfit{font-size:8px;font-family:'Montserrat',sans-serif;font-weight:700;letter-spacing:.04em}
+
+/* Hint */
+.hint{background:rgba(200,16,46,.07);border:1px solid rgba(200,16,46,.18);border-radius:5px;padding:9px 13px;font-size:.74rem;color:#bbb;line-height:1.5}
+.hint strong{color:#fff}
+.hint.gh{background:rgba(20,120,20,.09);border-color:rgba(20,180,20,.2)}
+.hint.wh{background:rgba(20,100,20,.09);border-color:rgba(20,150,20,.2)}
+
+/* Actions + CTA */
+.acts{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.cta{background:var(--sur);border:1px solid var(--bdr);border-left:4px solid var(--red);border-radius:6px;padding:18px 20px;display:flex;align-items:flex-start;gap:14px;flex-wrap:wrap}
+.cta strong{display:block;font-family:'Montserrat',sans-serif;font-weight:700;font-size:.86rem;letter-spacing:.04em;text-transform:uppercase;color:#fff;margin-bottom:3px}
+.cta p{font-size:.76rem;color:var(--mut);line-height:1.5;max-width:420px}
+.cta .note{font-size:.7rem;color:#3dba5e;margin-top:4px}
+.cta-a{background:var(--red);color:#fff;padding:10px 18px;border-radius:3px;font-family:'Montserrat',sans-serif;font-size:.68rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;text-decoration:none;white-space:nowrap;align-self:center;flex-shrink:0}
+.cta-a:hover{background:var(--red2)}
+
+/* Snow */
+.snow{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:0;overflow:hidden}
+.flake{position:absolute;top:-10px;color:#ffffff0c;animation:fall linear infinite}
+@keyframes fall{to{transform:translateY(100vh) rotate(360deg)}}
+</style>
+</head>
+<body>
+<div class="snow" id="snow"></div>
+<header>
+  <div class="logo">
+    <img src="https://images.squarespace-cdn.com/content/v1/5f763658cce74c4bce01c68e/1603252509504-ZFK8QBW30IVESHS56UKY/Highstrung-logo+white.png?format=750w" alt="High-Strung" id="limg">
+    <span class="logo-fb">High-Strung Christmas Lights</span>
+  </div>
+  <a href="https://clienthub.getjobber.com/hubs/e1d72488-4113-44d4-933c-1b45bed9a714/public/requests/257811/new" target="_blank" class="hbtn">Free Quote</a>
+</header>
+
+<!-- Upload -->
+<div id="up">
+  <h1>See Your Home Lit Up</h1>
+  <p>Upload a photo, draw your rooflines, add garland and wreaths, then download your design.</p>
+  <label class="ubtn" for="fi">📷 Choose Photo</label>
+  <input type="file" id="fi" accept="image/*">
+  <p style="font-size:.73rem;color:var(--mut)">JPG, PNG, HEIC — front-facing photos work best</p>
+</div>
+
+<!-- Design -->
+<div id="ds">
+  <!-- Toolbar -->
+  <div class="tb">
+    <span class="tl">Mode:</span>
+    <button class="mbtn la" id="ml">💡 Lights</button>
+    <button class="mbtn" id="mg">🌿 Garland</button>
+    <button class="mbtn" id="mw">🎄 Wreath</button>
+    <div class="tsep"></div>
+
+    <!-- Lights opts -->
+    <div id="lo" style="display:flex;align-items:center;gap:6px;flex-wrap:wrap">
+      <span class="tl">Pattern:</span>
+      <div class="pslots" id="pslots"></div>
+      <div class="padd" id="padd" title="Add color">+</div>
+    </div>
+
+    <!-- Garland opts -->
+    <div id="go" style="display:none;align-items:center;gap:6px;flex-wrap:wrap">
+      <span class="tl">Density:</span>
+      <input type="range" id="gdens" min="1" max="5" value="3">
+      <span class="rv" id="gdv">Med</span>
+      <div class="tsep"></div>
+      <span class="tl">Curve:</span>
+      <input type="range" id="gcurve" min="0" max="80" value="20">
+      <span class="rv" id="gcv">20</span>
+    </div>
+
+    <!-- Wreath opts -->
+    <div id="wo" style="display:none;align-items:center;gap:5px;flex-wrap:wrap">
+      <span class="tl">Size:</span>
+      <button class="wbtn on" data-s="20">12"</button>
+      <button class="wbtn" data-s="35">24"</button>
+      <button class="wbtn" data-s="55">36"</button>
+      <button class="wbtn" data-s="72">48"</button>
+      <button class="wbtn" data-s="45">60"</button>
+    </div>
+
+    <div class="tsep"></div>
+    <button class="btn bd" id="undobtn">↩ Undo</button>
+    <button class="btn bd" id="clearbtn">Clear</button>
+    <div class="tsep"></div>
+    <label class="btn bs" style="cursor:pointer">📷 Change<input type="file" accept="image/*" id="cf" style="display:none"></label>
+
+    <div class="cpop" id="cpop"></div>
+  </div>
+
+  <!-- Hint -->
+  <div class="hint" id="hint"><strong>Lights:</strong> Click to place points along a roofline. <strong>Double-click</strong> to finish the line.</div>
+
+  <!-- Canvas -->
+  <div class="cw" id="cw">
+    <div id="zw" style="position:absolute;top:0;left:0;width:100%;height:100%;transform-origin:0 0">
+      <img id="mi" alt="Your home" style="width:100%;display:block;pointer-events:none;user-select:none">
+      <canvas id="mc" style="position:absolute;top:0;left:0;width:100%;height:100%;cursor:crosshair;touch-action:none;display:block"></canvas>
+    </div>
+    <div class="zbts">
+      <div class="zbt" id="zin">+</div>
+      <div class="zbt zfit" id="zfit">FIT</div>
+      <div class="zbt" id="zout">−</div>
+    </div>
+  </div>
+
+  <!-- Actions -->
+  <div class="acts">
+    <button class="btn bg" id="dlbtn">↓ Download &amp; Get Quote</button>
+  </div>
+
+  <!-- CTA -->
+  <div class="cta">
+    <div>
+      <strong>Ready for a Free Quote?</strong>
+      <p>Download your design, then attach it to your quote request so we know exactly what you have in mind.</p>
+      <p class="note">✓ In the quote form, upload your preview in the "Upload Images" section.</p>
+    </div>
+    <a href="https://clienthub.getjobber.com/hubs/e1d72488-4113-44d4-933c-1b45bed9a714/public/requests/257811/new" target="_blank" class="cta-a">Open Quote Form →</a>
+  </div>
+</div>
+
+<script>
+// Snow
+(function(){
+  var el=document.getElementById('snow');
+  for(var i=0;i<12;i++){
+    var f=document.createElement('div');f.className='flake';f.textContent='❄';
+    f.style.cssText='left:'+Math.random()*100+'%;font-size:'+(0.4+Math.random()*0.7)+'em;animation-duration:'+(10+Math.random()*10)+'s;animation-delay:'+(Math.random()*12)+'s';
+    el.appendChild(f);
+  }
+})();
+document.getElementById('limg').onerror=function(){this.classList.add('err')};
+
+// ── Palette ────────────────────────────────────────────────────────────────
+var PAL={
+  'Warm White':'#ffe899','Cool White':'#e8f4ff','Red':'#ff2222','Green':'#22cc22',
+  'Blue':'#2255ff','Gold':'#ffd700','Orange':'#ff8800','Pink':'#ff44cc','Purple':'#9933ff','Teal':'#00ccbb'
+};
+
+// ── App state ──────────────────────────────────────────────────────────────
+var mode    = 'lights';
+var pattern = ['#ffe899'];
+var gDens   = 3;
+var gCurve  = 20;
+var wSize   = 20;
+var elements= [];   // committed elements
+var curPts  = [];   // points for line being drawn
+var imgNatW = 1, imgNatH = 1;
+
+// Zoom / pan — applied only to the canvas CSS transform, NOT to coordinates
+var zoom = 1, panX = 0, panY = 0;
+var minZoom = 1, maxZoom = 8;
+
+// Double-tap/click detection
+var lastPointerTime = 0;
+
+// Pinch state
+var pinching = false;
+var pinchDist0 = 0, pinchZoom0 = 0, pinchPanX0 = 0, pinchPanY0 = 0, pinchMidX = 0, pinchMidY = 0;
+
+// ── DOM refs ───────────────────────────────────────────────────────────────
+var canvas   = document.getElementById('mc');
+var ctx      = canvas.getContext('2d');
+var cwEl     = document.getElementById('cw');
+var imgEl    = document.getElementById('mi');
+
+// ── Upload ─────────────────────────────────────────────────────────────────
+function loadFile(file) {
+  if (!file) return;
+  var reader = new FileReader();
+  reader.onload = function(ev) {
+    imgEl.onload = function() {
+      imgNatW = imgEl.naturalWidth;
+      imgNatH = imgEl.naturalHeight;
+      // Show design screen first so we can measure
+      document.getElementById('up').style.display = 'none';
+      document.getElementById('ds').style.display = 'flex';
+      // Use a small timeout to let the browser render before measuring
+      setTimeout(function() {
+        resizeCanvas();
+        elements = []; curPts = [];
+        resetView();
+        draw();
+      }, 50);
+    };
+    imgEl.src = ev.target.result;
+  };
+  reader.readAsDataURL(file);
+}
+document.getElementById('fi').onchange = function(){ loadFile(this.files[0]); };
+document.getElementById('cf').onchange = function(){ loadFile(this.files[0]); };
+
+function resizeCanvas() {
+  var w = cwEl.clientWidth || 800;
+  var h = Math.round(w * imgNatH / imgNatW);
+  canvas.width  = w;
+  canvas.height = h;
+  // Set cw and zw height explicitly so container doesn't collapse
+  cwEl.style.height = h + 'px';
+  document.getElementById('zw').style.height = h + 'px';
+}
+
+window.addEventListener('resize', function() {
+  if (!imgEl.src || !imgEl.complete) return;
+  var oldW = canvas.width;
+  resizeCanvas();
+  if (oldW === 0) return;
+  var sx = canvas.width / oldW;
+  var sy = canvas.height / (oldW * imgNatH / imgNatW);  // previous height
+  elements.forEach(function(el) {
+    if (el.pts) el.pts = el.pts.map(function(p){ return [p[0]*sx, p[1]*sy]; });
+    if (el.x !== undefined) { el.x *= sx; el.y *= sy; el.r *= sx; }
+  });
+  curPts = curPts.map(function(p){ return [p[0]*sx, p[1]*sy]; });
+  draw();
+});
+
+// ── Mode ───────────────────────────────────────────────────────────────────
+function setMode(m) {
+  commitLine();
+  mode = m;
+  document.getElementById('ml').className = 'mbtn' + (m==='lights' ? ' la' : '');
+  document.getElementById('mg').className = 'mbtn' + (m==='garland' ? ' ga' : '');
+  document.getElementById('mw').className = 'mbtn' + (m==='wreath'  ? ' wa' : '');
+  document.getElementById('lo').style.display = m==='lights'  ? 'flex' : 'none';
+  document.getElementById('go').style.display = m==='garland' ? 'flex' : 'none';
+  document.getElementById('wo').style.display = m==='wreath'  ? 'flex' : 'none';
+  var hints = {
+    lights:  '<strong>Lights:</strong> Click to place points. <strong>Double-click</strong> to finish the line.',
+    garland: '<strong>Garland:</strong> Click to place points. <strong>Double-click</strong> to finish. Adjust curve and density.',
+    wreath:  '<strong>Wreath:</strong> Click anywhere on the photo to place a wreath.'
+  };
+  var h = document.getElementById('hint');
+  h.innerHTML = hints[m];
+  h.className = 'hint' + (m==='garland' ? ' gh' : m==='wreath' ? ' wh' : '');
+}
+document.getElementById('ml').onclick = function(){ setMode('lights'); };
+document.getElementById('mg').onclick = function(){ setMode('garland'); };
+document.getElementById('mw').onclick = function(){ setMode('wreath'); };
+
+// ── Pattern builder ────────────────────────────────────────────────────────
+var pickerFor = null;
+function buildPalette() {
+  var pop = document.getElementById('cpop');
+  pop.innerHTML = '';
+  Object.entries(PAL).forEach(function(kv) {
+    var sw = document.createElement('div');
+    sw.className = 'csw'; sw.style.background = kv[1]; sw.title = kv[0];
+    sw.addEventListener('click', function(e) {
+      e.stopPropagation();
+      if (pickerFor !== null) { pattern[pickerFor] = kv[1]; renderPattern(); }
+      pop.classList.remove('on'); pickerFor = null;
+    });
+    pop.appendChild(sw);
+  });
+}
+buildPalette();
+document.addEventListener('click', function(){ document.getElementById('cpop').classList.remove('on'); pickerFor = null; });
+
+function renderPattern() {
+  var s = document.getElementById('pslots'); s.innerHTML = '';
+  pattern.forEach(function(col, i) {
+    var d = document.createElement('div'); d.className = 'ps';
+    d.style.background = col; d.style.borderColor = col;
+    d.addEventListener('click', function(e) { e.stopPropagation(); pickerFor = i; document.getElementById('cpop').classList.add('on'); });
+    d.addEventListener('contextmenu', function(e) { e.preventDefault(); if (pattern.length > 1) { pattern.splice(i,1); renderPattern(); draw(); } });
+    s.appendChild(d);
+  });
+  // Update all existing light elements to use current pattern
+  elements.forEach(function(el) { if (el.type === 'lights') el.pat = pattern.slice(); });
+  draw();
+}
+document.getElementById('padd').addEventListener('click', function(e) {
+  e.stopPropagation();
+  if (pattern.length < 8) { pattern.push('#ff2222'); renderPattern(); pickerFor = pattern.length-1; document.getElementById('cpop').classList.add('on'); }
+});
+renderPattern();
+
+// Garland sliders
+document.getElementById('gdens').addEventListener('input', function() {
+  gDens = +this.value;
+  document.getElementById('gdv').textContent = ['','Sparse','Light','Med','Full','Dense'][gDens];
+  draw();
+});
+document.getElementById('gcurve').addEventListener('input', function() {
+  gCurve = +this.value;
+  document.getElementById('gcv').textContent = this.value;
+  draw();
+});
+
+// Wreath sizes
+document.querySelectorAll('.wbtn').forEach(function(b) {
+  b.addEventListener('click', function() {
+    document.querySelectorAll('.wbtn').forEach(function(x){ x.classList.remove('on'); });
+    this.classList.add('on');
+    wSize = +this.dataset.s;
+  });
+});
+
+// ── Zoom / pan ──────────────────────────────────────────────────────────────
+// Zoom is purely CSS transform on the canvas — coordinates are NEVER affected
+function applyTransform() {
+  var zw = document.getElementById('zw');
+  zw.style.transform = 'translate(' + panX + 'px,' + panY + 'px) scale(' + zoom + ')';
+}
+function resetView() { zoom = 1; panX = 0; panY = 0; applyTransform(); }
+function clampPan() {
+  var dw = cwEl.clientWidth, dh = cwEl.clientHeight;
+  var scaledW = canvas.width  * zoom;
+  var scaledH = canvas.height * zoom;
+  panX = Math.min(0, Math.max(dw - scaledW, panX));
+  panY = Math.min(0, Math.max(dh - scaledH, panY));
+  if (zoom <= 1) { panX = 0; panY = 0; }
+}
+function zoomAround(cx, cy, newZoom) {
+  // cx, cy are in cwEl-relative coords
+  newZoom = Math.min(maxZoom, Math.max(minZoom, newZoom));
+  panX = cx - (cx - panX) * (newZoom / zoom);
+  panY = cy - (cy - panY) * (newZoom / zoom);
+  zoom = newZoom;
+  clampPan();
+  applyTransform();
+}
+
+document.getElementById('zin').addEventListener('click',  function(e){ e.stopPropagation(); var r=cwEl.getBoundingClientRect(); zoomAround(r.width/2, r.height/2, zoom*1.6); });
+document.getElementById('zout').addEventListener('click', function(e){ e.stopPropagation(); var r=cwEl.getBoundingClientRect(); zoomAround(r.width/2, r.height/2, zoom/1.6); });
+document.getElementById('zfit').addEventListener('click', function(e){ e.stopPropagation(); resetView(); });
+
+// Scroll to zoom
+cwEl.addEventListener('wheel', function(e) {
+  e.preventDefault();
+  var r = cwEl.getBoundingClientRect();
+  zoomAround(e.clientX - r.left, e.clientY - r.top, zoom * (e.deltaY < 0 ? 1.15 : 0.87));
+}, { passive: false });
+
+// ── Convert screen coords → canvas coords ─────────────────────────────────
+// Canvas is CSS-transformed (zoom/pan), but canvas pixel coords are unchanged.
+// To get canvas coords from a screen point:
+function screenToCanvas(clientX, clientY) {
+  var r = cwEl.getBoundingClientRect();
+  // Position relative to cw container
+  var rx = clientX - r.left;
+  var ry = clientY - r.top;
+  // Undo pan and zoom to get canvas pixel coords
+  var cx = (rx - panX) / zoom;
+  var cy = (ry - panY) / zoom;
+  return [cx, cy];
+}
+
+// ── Pointer events ─────────────────────────────────────────────────────────
+var activePointerId = null;
+
+canvas.addEventListener('pointerdown', function(e) {
+  e.preventDefault();
+  e.stopPropagation();
+
+  // Only handle primary pointer (ignore secondary touches for pinch)
+  if (e.isPrimary === false) return;
+
+  activePointerId = e.pointerId;
+  var pos = screenToCanvas(e.clientX, e.clientY);
+  var now = Date.now();
+
+  if (mode === 'wreath') {
+    elements.push({ type: 'wreath', x: pos[0], y: pos[1], r: wSize });
+    draw(); return;
+  }
+
+  // Double-tap/click detection
+  if (now - lastPointerTime < 380) {
+    lastPointerTime = 0;
+    commitLine();
+    return;
+  }
+  lastPointerTime = now;
+  curPts.push(pos);
+  draw();
+}, { passive: false });
+
+// Pinch to zoom using touch events on the wrapper
+cwEl.addEventListener('touchstart', function(e) {
+  if (e.touches.length === 2) {
+    pinching = true;
+    var t1 = e.touches[0], t2 = e.touches[1];
+    pinchDist0  = Math.hypot(t2.clientX-t1.clientX, t2.clientY-t1.clientY);
+    pinchZoom0  = zoom; pinchPanX0 = panX; pinchPanY0 = panY;
+    var r = cwEl.getBoundingClientRect();
+    pinchMidX = ((t1.clientX+t2.clientX)/2) - r.left;
+    pinchMidY = ((t1.clientY+t2.clientY)/2) - r.top;
+  }
+}, { passive: true });
+
+cwEl.addEventListener('touchmove', function(e) {
+  if (e.touches.length === 2 && pinching) {
+    e.preventDefault();
+    var t1 = e.touches[0], t2 = e.touches[1];
+    var dist = Math.hypot(t2.clientX-t1.clientX, t2.clientY-t1.clientY);
+    var newZoom = Math.min(maxZoom, Math.max(minZoom, pinchZoom0 * dist / pinchDist0));
+    panX = pinchMidX - (pinchMidX - pinchPanX0) * (newZoom / pinchZoom0);
+    panY = pinchMidY - (pinchMidY - pinchPanY0) * (newZoom / pinchZoom0);
+    zoom = newZoom;
+    clampPan(); applyTransform();
+  }
+}, { passive: false });
+
+cwEl.addEventListener('touchend', function(e) {
+  if (e.touches.length < 2) pinching = false;
+}, { passive: true });
+
+// ── Commit / Undo / Clear ──────────────────────────────────────────────────
+function commitLine() {
+  if (curPts.length >= 2) {
+    elements.push({ type: mode, pts: curPts.slice(), pat: pattern.slice(), gDens: gDens, gCurve: gCurve });
+  }
+  curPts = [];
+  draw();
+}
+
+document.getElementById('undobtn').addEventListener('click', function() {
+  if (curPts.length > 0) curPts.pop();
+  else elements.pop();
+  draw();
+});
+document.getElementById('clearbtn').addEventListener('click', function() {
+  elements = []; curPts = []; draw();
+});
+
+// ── Download ───────────────────────────────────────────────────────────────
+document.getElementById('dlbtn').addEventListener('click', function() {
+  commitLine();
+  draw(); // ensure latest frame
+  // Composite: draw photo + canvas overlay at natural resolution
+  var tmp = document.createElement('canvas');
+  tmp.width  = imgNatW;
+  tmp.height = imgNatH;
+  var tc = tmp.getContext('2d');
+  tc.drawImage(imgEl, 0, 0, imgNatW, imgNatH);
+  // Scale canvas drawing up to natural size
+  tc.drawImage(canvas, 0, 0, imgNatW, imgNatH);
+  var url = tmp.toDataURL('image/jpeg', 0.93);
+  var a = document.createElement('a');
+  a.href = url; a.download = 'hscl-preview.jpg';
+  document.body.appendChild(a); a.click();
+  setTimeout(function(){ document.body.removeChild(a); }, 100);
+});
+
+// ── Draw ───────────────────────────────────────────────────────────────────
+function draw() {
+  var W = canvas.width, H = canvas.height;
+  ctx.clearRect(0, 0, W, H);
+
+  var br = Math.max(3, W / 160);   // bulb radius
+  var ww = Math.max(1, W / 500);   // wire width
+
+  // Draw all committed elements
+  elements.forEach(function(el) {
+    if      (el.type === 'lights')  drawLightsLine(el, br, ww);
+    else if (el.type === 'garland') drawGarlandLine(el, ww);
+    else if (el.type === 'wreath')  drawWreath(el.x, el.y, el.r);
+  });
+
+  // Draw in-progress line
+  if (curPts.length > 0) {
+    // Dashed guide line
+    if (curPts.length > 1) {
+      ctx.save();
+      ctx.strokeStyle = 'rgba(255,255,255,0.3)';
+      ctx.lineWidth = ww; ctx.lineCap = 'round';
+      ctx.setLineDash([5, 5]);
+      ctx.beginPath(); ctx.moveTo(curPts[0][0], curPts[0][1]);
+      for (var i = 1; i < curPts.length; i++) ctx.lineTo(curPts[i][0], curPts[i][1]);
+      ctx.stroke(); ctx.restore();
+    }
+    // Point markers + preview bulbs if lights mode
+    if (mode === 'lights' && curPts.length >= 2) {
+      drawLightsLine({ pts: curPts, pat: pattern }, br, ww);
+    } else if (mode === 'garland' && curPts.length >= 2) {
+      drawGarlandLine({ pts: curPts, gDens: gDens, gCurve: gCurve }, ww);
+    }
+    curPts.forEach(function(p) {
+      ctx.fillStyle = '#fff';
+      ctx.beginPath(); ctx.arc(p[0], p[1], br * 1.5, 0, Math.PI*2); ctx.fill();
+      ctx.strokeStyle = '#c8102e'; ctx.lineWidth = ww * 2;
+      ctx.beginPath(); ctx.arc(p[0], p[1], br * 2.5, 0, Math.PI*2); ctx.stroke();
+    });
+  }
+
+  // Empty state prompt
+  if (elements.length === 0 && curPts.length === 0) {
+    ctx.fillStyle = 'rgba(0,0,0,0.28)'; ctx.fillRect(0, 0, W, H);
+    ctx.fillStyle = 'rgba(255,255,255,0.5)';
+    ctx.font = 'bold ' + Math.max(12, W/50) + 'px Montserrat,sans-serif';
+    ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+    ctx.fillText('Click to start designing', W/2, H/2);
+  }
+}
+
+// ── Lights line ─────────────────────────────────────────────────────────────
+function drawLightsLine(el, br, ww) {
+  var pts = el.pts, pat2 = el.pat || pattern;
+  if (!pts || pts.length < 2) return;
+
+  // Wire
+  ctx.save();
+  ctx.strokeStyle = 'rgba(60,60,60,0.6)';
+  ctx.lineWidth = ww; ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+  ctx.beginPath(); ctx.moveTo(pts[0][0], pts[0][1]);
+  for (var i = 1; i < pts.length; i++) ctx.lineTo(pts[i][0], pts[i][1]);
+  ctx.stroke(); ctx.restore();
+
+  // Bulbs — solid bright circles, no animation
+  var spacing = 14;
+  var dist = 0, next = spacing * 0.3, bi = 0;
+  for (var i = 0; i < pts.length - 1; i++) {
+    var x0=pts[i][0], y0=pts[i][1], x1=pts[i+1][0], y1=pts[i+1][1];
+    var dx=x1-x0, dy=y1-y0, len=Math.sqrt(dx*dx+dy*dy);
+    while (next <= dist + len) {
+      var f = (next - dist) / len;
+      var bx = x0 + dx*f, by = y0 + dy*f;
+      var col = pat2[bi % pat2.length];
+      // Solid filled circle
+      ctx.fillStyle = col;
+      ctx.beginPath(); ctx.arc(bx, by, br, 0, Math.PI*2); ctx.fill();
+      // White highlight
+      ctx.fillStyle = 'rgba(255,255,255,0.75)';
+      ctx.beginPath(); ctx.arc(bx - br*0.28, by - br*0.28, br*0.32, 0, Math.PI*2); ctx.fill();
+      bi++; next += spacing;
+    }
+    dist += len;
+  }
+}
+
+// ── Garland line ─────────────────────────────────────────────────────────────
+function drawGarlandLine(el, ww) {
+  var pts = el.pts, den = el.gDens || gDens, curve = (el.gCurve !== undefined ? el.gCurve : gCurve);
+  if (!pts || pts.length < 2) return;
+
+  for (var i = 0; i < pts.length - 1; i++) {
+    var x0=pts[i][0], y0=pts[i][1], x1=pts[i+1][0], y1=pts[i+1][1];
+    var mx = (x0+x1)/2, my = (y0+y1)/2 + curve;
+
+    // Rope
+    ctx.save();
+    ctx.strokeStyle = '#1a4a1a';
+    ctx.lineWidth = Math.max(3, ww * 5);
+    ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+    ctx.beginPath(); ctx.moveTo(x0,y0); ctx.quadraticCurveTo(mx, my, x1, y1);
+    ctx.stroke(); ctx.restore();
+
+    // Foliage clusters along curve
+    var steps = Math.max(8, Math.floor(Math.hypot(x1-x0, y1-y0) / (8/den)));
+    for (var s = 0; s <= steps; s++) {
+      var tt = s / steps;
+      var bx = (1-tt)*(1-tt)*x0 + 2*(1-tt)*tt*mx + tt*tt*x1;
+      var by = (1-tt)*(1-tt)*y0 + 2*(1-tt)*tt*my + tt*tt*y1;
+      var sz = Math.max(2, ww * 3.5) * (0.7 + 0.6 * Math.random());
+      ctx.fillStyle = 'hsl(' + (105+Math.floor(Math.random()*35)) + ',62%,' + (22+Math.floor(Math.random()*16)) + '%)';
+      ctx.beginPath(); ctx.arc(bx, by, sz, 0, Math.PI*2); ctx.fill();
+    }
+
+  }
+}
+
+// ── Wreath ────────────────────────────────────────────────────────────────
+function drawWreath(cx, cy, r) {
+  // Leaves in layers
+  for (var layer = 0; layer < 3; layer++) {
+    var lr = r - layer*(r*0.11);
+    var segs = Math.max(12, Math.floor(lr * 0.7));
+    for (var i = 0; i < segs; i++) {
+      var ang = (i/segs)*Math.PI*2;
+      var nx = cx + Math.cos(ang)*lr, ny = cy + Math.sin(ang)*lr;
+      ctx.save(); ctx.translate(nx, ny); ctx.rotate(ang + Math.PI/2);
+      var lg = ctx.createRadialGradient(0,0,0,0,0,r*0.28);
+      lg.addColorStop(0,'#3a8c2a'); lg.addColorStop(1,'#1a4a0a');
+      ctx.fillStyle = lg;
+      ctx.beginPath(); ctx.ellipse(0, 0, r*0.1, r*0.14, 0, 0, Math.PI*2); ctx.fill();
+      ctx.restore();
+    }
+  }
+  // Inner shadow
+  var inn = ctx.createRadialGradient(cx,cy,r*0.3,cx,cy,r*0.6);
+  inn.addColorStop(0,'rgba(0,0,0,0.72)'); inn.addColorStop(1,'rgba(0,0,0,0)');
+  ctx.fillStyle = inn; ctx.beginPath(); ctx.arc(cx, cy, r*0.6, 0, Math.PI*2); ctx.fill();
+  // Berries
+  var bc = Math.max(4, Math.floor(r*0.45));
+  for (var i = 0; i < bc; i++) {
+    var a = (i/bc)*Math.PI*2 + 0.4;
+    var br2 = r*(0.62+(i%3)*0.1);
+    var bx = cx+Math.cos(a)*br2, by = cy+Math.sin(a)*br2;
+    var bg = ctx.createRadialGradient(bx-1,by-1,0,bx,by,Math.max(1.5,r*0.065));
+    bg.addColorStop(0,'#ff4444'); bg.addColorStop(1,'#880000');
+    ctx.fillStyle = bg; ctx.beginPath(); ctx.arc(bx, by, Math.max(1.5,r*0.065), 0, Math.PI*2); ctx.fill();
+  }
+  // Red bow at bottom
+  var bowY = cy + r*0.87, bw = r*0.4, bh = r*0.24;
+  ctx.fillStyle = '#cc1111';
+  ctx.beginPath(); ctx.ellipse(cx-bw*0.48, bowY-bh*0.08, bw*0.58, bh*0.52, -0.4, 0, Math.PI*2); ctx.fill();
+  ctx.beginPath(); ctx.ellipse(cx+bw*0.48, bowY-bh*0.08, bw*0.58, bh*0.52,  0.4, 0, Math.PI*2); ctx.fill();
+  ctx.strokeStyle = '#aa0000'; ctx.lineWidth = Math.max(1.5, r*0.055); ctx.lineCap = 'round';
+  ctx.beginPath(); ctx.moveTo(cx, bowY); ctx.lineTo(cx-bw*0.38, bowY+bh*0.85); ctx.stroke();
+  ctx.beginPath(); ctx.moveTo(cx, bowY); ctx.lineTo(cx+bw*0.28, bowY+bh*0.82); ctx.stroke();
+  ctx.fillStyle = '#dd2222'; ctx.beginPath(); ctx.arc(cx, bowY, bw*0.16, 0, Math.PI*2); ctx.fill();
+}
+</script>
+</body>
+</html>
